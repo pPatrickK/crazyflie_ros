@@ -1,6 +1,8 @@
 [submodule "crazyflie_cpp"]
 	path = crazyflie_cpp
 	url = https://github.com/pPatrickK/crazyflie_cpp.git
+	branch = flw
 [submodule "crazyflie_tools"]
 	path = crazyflie_tools
 	url = https://github.com/pPatrickK/crazyflie_tools
+	branch = flw
