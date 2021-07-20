@@ -1,0 +1,6 @@
+uint8 groupMask
+float32 height
+float32 yaw # deg
+bool useCurrentYaw
+duration duration
+---

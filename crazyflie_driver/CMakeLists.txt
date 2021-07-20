@@ -33,12 +33,14 @@ add_service_files(
   AddCrazyflie.srv
   GoTo.srv
   Land.srv
+  Land2.srv
   NotifySetpointsStop.srv
   RemoveCrazyflie.srv
   SetGroupMask.srv
   StartTrajectory.srv
   Stop.srv
   Takeoff.srv
+  Takeoff2.srv
   UpdateParams.srv
   UploadTrajectory.srv
   sendPacket.srv

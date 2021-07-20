@@ -4,12 +4,14 @@
 #include "crazyflie_driver/AddCrazyflie.h"
 #include "crazyflie_driver/GoTo.h"
 #include "crazyflie_driver/Land.h"
+#include "crazyflie_driver/Land2.h"
 #include "crazyflie_driver/NotifySetpointsStop.h"
 #include "crazyflie_driver/RemoveCrazyflie.h"
 #include "crazyflie_driver/SetGroupMask.h"
 #include "crazyflie_driver/StartTrajectory.h"
 #include "crazyflie_driver/Stop.h"
 #include "crazyflie_driver/Takeoff.h"
+#include "crazyflie_driver/Takeoff2.h"
 #include "crazyflie_driver/UpdateParams.h"
 #include "crazyflie_driver/UploadTrajectory.h"
 #include "crazyflie_driver/sendPacket.h"
@@ -123,7 +125,9 @@ public:
     , m_serviceUpdateParams()
     , m_serviceSetGroupMask()
     , m_serviceTakeoff()
+    , m_serviceTakeoff2()
     , m_serviceLand()
+    , m_serviceLand2()
     , m_serviceStop()
     , m_serviceGoTo()
     , m_serviceUploadTrajectory()
@@ -406,7 +410,9 @@ void cmdPositionSetpoint(
 
     m_serviceSetGroupMask = n.advertiseService(m_tf_prefix + "/set_group_mask", &CrazyflieROS::setGroupMask, this);
     m_serviceTakeoff = n.advertiseService(m_tf_prefix + "/takeoff", &CrazyflieROS::takeoff, this);
+    m_serviceTakeoff2 = n.advertiseService(m_tf_prefix + "/takeoff2", &CrazyflieROS::takeoff2, this);
     m_serviceLand = n.advertiseService(m_tf_prefix + "/land", &CrazyflieROS::land, this);
+    m_serviceLand2 = n.advertiseService(m_tf_prefix + "/land2", &CrazyflieROS::land2, this);
     m_serviceStop = n.advertiseService(m_tf_prefix + "/stop", &CrazyflieROS::stop, this);
     m_serviceGoTo = n.advertiseService(m_tf_prefix + "/go_to", &CrazyflieROS::goTo, this);
     m_serviceUploadTrajectory = n.advertiseService(m_tf_prefix + "/upload_trajectory", &CrazyflieROS::uploadTrajectory, this);
@@ -767,6 +773,15 @@ void cmdPositionSetpoint(
     return true;
   }
 
+  bool takeoff2(
+    crazyflie_driver::Takeoff2::Request& req,
+    crazyflie_driver::Takeoff2::Response& res)
+  {
+    ROS_INFO_NAMED(m_tf_prefix, "Takeoff2 requested");
+    m_cf.takeoff2(req.height, req.yaw, req.useCurrentYaw, req.duration.toSec(), req.groupMask);
+    return true;
+  }
+
   bool land(
     crazyflie_driver::Land::Request& req,
     crazyflie_driver::Land::Response& res)
@@ -775,6 +790,16 @@ void cmdPositionSetpoint(
     m_cf.land(req.height, req.duration.toSec(), req.groupMask);
     return true;
   }
+
+  bool land2(
+    crazyflie_driver::Land2::Request& req,
+    crazyflie_driver::Land2::Response& res)
+  {
+    ROS_INFO_NAMED(m_tf_prefix, "Land2 requested");
+    m_cf.land2(req.height, req.yaw, req.useCurrentYaw, req.duration.toSec(), req.groupMask);
+    return true;
+  }
+
 
   bool stop(
     crazyflie_driver::Stop::Request& req,
@@ -866,7 +891,9 @@ private:
   // High-level setpoints
   ros::ServiceServer m_serviceSetGroupMask;
   ros::ServiceServer m_serviceTakeoff;
+  ros::ServiceServer m_serviceTakeoff2;
   ros::ServiceServer m_serviceLand;
+  ros::ServiceServer m_serviceLand2;
   ros::ServiceServer m_serviceStop;
   ros::ServiceServer m_serviceGoTo;
   ros::ServiceServer m_serviceUploadTrajectory;
